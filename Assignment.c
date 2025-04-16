@@ -48,6 +48,5 @@ void printPassword(char* pass);
 
 void main()
 {
-	login();
-	displayMenu();
+	
 }
