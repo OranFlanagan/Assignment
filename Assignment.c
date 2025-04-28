@@ -85,5 +85,21 @@ void login()
     else
     {
         printf("\nLogin successful!\n");
+        printf("Welcome %s!\n", enteredUser);
+    }
+}
+
+int main()
+{
+    login();
+    return 0;
+}
+
+void clearBuffer() 
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) 
+    {
+        ;
     }
 }
