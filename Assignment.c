@@ -116,3 +116,32 @@ void displayMenu() {
     printf("8) Sort by valuation\n");
     printf("0) Exit\n");
 }
+
+void menuLoop() {
+    int choice;
+    do {
+        displayMenu();
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+        clearBuffer();
+
+        switch (choice) {
+        case 1: addMachine(); break;
+        case 2: displayAllMachines(); break;
+        case 3: displayMachineByChassis(); break;
+        case 4: updateMachine(); break;
+        case 5: deleteMachine(); break;
+        case 6: generateStatistics(); break;
+        case 7: printReport(); break;
+        case 8: sortByValuation(); break;
+        case 0: printf("Exiting...\n"); break;
+        default: printf("Invalid choice.\n");
+        }
+    } while (choice != 0);
+}
+
+int main() {
+    login();
+    menuLoop();
+    return 0;
+}
