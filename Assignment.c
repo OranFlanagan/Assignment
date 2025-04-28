@@ -103,3 +103,16 @@ void clearBuffer()
         ;
     }
 }
+
+void displayMenu() {
+    printf("\nFleet Management Menu:\n");
+    printf("1) Add machine\n");
+    printf("2) Display all machines\n");
+    printf("3) Display machine details\n");
+    printf("4) Update machine\n");
+    printf("5) Delete machine\n");
+    printf("6) Generate statistics\n");
+    printf("7) Print report\n");
+    printf("8) Sort by valuation\n");
+    printf("0) Exit\n");
+}
