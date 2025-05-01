@@ -1,0 +1,32 @@
+Machinery Management Ltd. - Fleet Report
+=======================================
+
+Machine Details:
+----------------
+Chassis Number: 1
+Make: ford
+Model: mondeo
+Year: 2012
+Cost: 50000.00
+Current Valuation: 12000.00
+Current Mileage: 47000.00
+Next Service Mileage: 52000.00
+Owner: oran
+Email: oran@yahoo.com
+Phone: 0123456789
+Type: Tractor
+Breakdowns: >5 times
+----------------------------------------
+
+Performance Statistics:
+======================
+Breakdown Statistics by Machine Type:
+------------------------------------
+Machine Type    Total           No Breakdowns   % No Breakdowns
+------------------------------------------------------------
+Tractor         1               0               0.00%
+
+Overall Statistics:
+------------------
+Total Machines: 1
+Machines with no breakdowns: 0 (0.00%)
