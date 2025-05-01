@@ -55,10 +55,10 @@ typedef struct Machinery {
     char ownerPhone[MAX_PHONE];
     MachineType machineType;
     BreakdownFrequency breakdowns;
-    struct Machinery* next;
+	struct Machinery* next;//pointer to the next node
 } Machinery;
 
-// Function prototypes
+// Function prototypes(acts as a table of contents)
 int authenticateUser(Login logins[], int count);
 void loadLogins(Login logins[], int* count);
 void loadFleet(Machinery** head);
@@ -117,36 +117,37 @@ int main() {
             while (getchar() != '\n'); // Clear input buffer
         }
 
-        switch (choice) {
-        case 1:
-            addMachine(&fleet);
-            break;
-        case 2:
-            displayAllMachines(fleet);
-            break;
-        case 3:
-            displayMachineDetails(fleet);
-            break;
-        case 4:
-            updateMachine(fleet);
-            break;
-        case 5:
-            deleteMachine(&fleet);
-            break;
-        case 6:
-            generateStatistics(fleet);
-            break;
-        case 7:
-            printReport(fleet);
-            break;
-        case 8:
-            listByValuation(fleet);
-            break;
-        case 0:
-            printf("Exiting program.\n");
-            break;
-        default:
-            printf("Invalid choice. Please try again.\n");
+        switch (choice)
+        {
+            case 1:
+                addMachine(&fleet);
+                break;
+            case 2:
+                displayAllMachines(fleet);
+                break;
+            case 3:
+                displayMachineDetails(fleet);
+                break;
+            case 4:
+                updateMachine(fleet);
+                break;
+            case 5:
+                deleteMachine(&fleet);
+                break;
+            case 6:
+                generateStatistics(fleet);
+                break;
+            case 7:
+                printReport(fleet);
+                break;
+            case 8:
+                listByValuation(fleet);
+                break;
+            case 0:
+                printf("Exiting program.\n");
+                break;
+            default:
+                printf("Invalid choice. Please try again.\n");
         }
     } while (choice != 0);
 
@@ -181,11 +182,11 @@ void loadLogins(Login logins[], int* count) {
     fclose(file);
 }
 
-// Function to authenticate user
+//checks if username and password are correct
 int authenticateUser(Login logins[], int count) {
     char username[MAX_USERNAME];
     char password[MAX_PASSWORD];
-    int attempts = 3;
+    int attempts = 3; //gives users only 3 tries
 
     while (attempts > 0) {
         printf("\nLogin\n");
@@ -193,11 +194,15 @@ int authenticateUser(Login logins[], int count) {
         scanf("%s", username);
 
         printf("Password: ");
+		// Hide password input
         int i = 0;
         char ch;
-        while ((ch = _getch()) != '\r' && i < MAX_PASSWORD - 1) {
-            if (ch == '\b') { // Handle backspace
-                if (i > 0) {
+        while ((ch = _getch()) != '\r' && i < MAX_PASSWORD - 1) 
+        {
+			if (ch == '\b') //hndle backspace
+            {
+                if (i > 0) 
+                {
                     printf("\b \b");
                     i--;
                 }
@@ -210,6 +215,7 @@ int authenticateUser(Login logins[], int count) {
         password[i] = '\0';
         printf("\n");
 
+		// Check if username and password match
         for (int i = 0; i < count; i++) {
             if (strcmp(username, logins[i].username) == 0 && strcmp(password, logins[i].password) == 0) {
                 printf("Authentication successful!\n");
@@ -236,7 +242,9 @@ void loadFleet(Machinery** head) {
     }
 
     char line[500];
-    while (fgets(line, sizeof(line), file)) {
+    while (fgets(line, sizeof(line), file)) 
+    {
+        //creates new machine and fills its data from a file
         Machinery* newMachine = createMachineNode();
 
         // Parse the line
@@ -255,13 +263,14 @@ void loadFleet(Machinery** head) {
             (int*)&newMachine->machineType,
             (int*)&newMachine->breakdowns);
 
-        // Insert into linked list in sorted order by chassis number
+		//Add to list in sorted order by chassis number
         if (*head == NULL || strcmp(newMachine->chassisNumber, (*head)->chassisNumber) < 0) {
             newMachine->next = *head;
             *head = newMachine;
         }
         else {
             Machinery* current = *head;
+            //Finds correct position in list
             while (current->next != NULL && strcmp(newMachine->chassisNumber, current->next->chassisNumber) > 0) {
                 current = current->next;
             }
@@ -274,7 +283,7 @@ void loadFleet(Machinery** head) {
     printf("Fleet data loaded successfully.\n");
 }
 
-// Function to save fleet data to file
+//Saves data to file
 void saveFleet(Machinery* head) {
     FILE* file = fopen(FLEET_FILE, "w");
     if (file == NULL) {
@@ -305,30 +314,30 @@ void saveFleet(Machinery* head) {
     printf("Fleet data saved successfully.\n");
 }
 
-// Function to create a new machine node
+//Create a new machine node
 Machinery* createMachineNode() {
     Machinery* newMachine = (Machinery*)malloc(sizeof(Machinery));
     if (newMachine == NULL) {
         printf("Memory allocation failed.\n");
         exit(1);
     }
-    newMachine->next = NULL;
+	newMachine->next = NULL;// initialize with no next pointer
     return newMachine;
 }
 
-// Function to validate chassis number uniqueness
+//Checks if chassis number is used before
 int validateChassisNumber(Machinery* head, const char* chassisNumber) {
     Machinery* current = head;
     while (current != NULL) {
         if (strcmp(current->chassisNumber, chassisNumber) == 0) {
-            return 0; // Not unique
+            return 0; //Already used
         }
         current = current->next;
     }
-    return 1; // Unique
+    return 1; //Not used
 }
 
-// Function to validate email format
+//Sees if @ nad .com are in the email address
 int validateEmail(const char* email) {
     int atFound = 0;
     int dotFound = 0;
@@ -358,7 +367,7 @@ void addMachine(Machinery** head) {
 
     printf("\nAdd New Machine\n");
 
-    // Chassis Number (must be unique)
+	//Gets chassis number
     do {
         printf("Enter chassis number: ");
         scanf("%s", newMachine->chassisNumber);
@@ -367,7 +376,6 @@ void addMachine(Machinery** head) {
         }
     } while (!validateChassisNumber(*head, newMachine->chassisNumber));
 
-    // Other details
     printf("Enter make: ");
     scanf(" %[^\n]", newMachine->make);
 
